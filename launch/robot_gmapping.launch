@@ -1,0 +1,45 @@
+<launch>
+    <!-- Set launch file parameters -->
+    <arg name="world" default="ROS-Academy" doc="ISCAS_building, ROS-Academy, small_city"/>
+    <arg name="paused" default="false"/>
+    <arg name="use_sim_time" default="true"/>
+    <arg name="gui" default="true"/>
+    <arg name="headless" default="false"/>
+    <arg name="debug" default="false"/>
+
+    <!-- Define initial pose of the model car -->
+    <arg name="x_pos" default="0"/>
+    <arg name="y_pos" default="0"/>
+    <arg name="z_pos" default="0"/>
+    <arg name="R_pos" default="0"/>
+    <arg name="P_pos" default="0"/>
+    <arg name="Y_pos" default="0"/>
+
+    <!-- Include Gazebo's empty world launch -->
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="world_name" value="$(find robot_description)/worlds/$(arg world).world"/>
+        <arg name="paused" value="$(arg paused)"/>
+        <arg name="use_sim_time" value="$(arg use_sim_time)"/>
+        <arg name="gui" value="$(arg gui)"/>
+        <arg name="headless" value="$(arg headless)"/>
+    </include>
+
+    <!-- Load robot model description parameters -->
+    <param name="robot_description" command="$(find xacro)/xacro --inorder '$(find robot_description)/urdf/xavier_car/xavier_car.xacro'"/>
+
+    <!-- Spawn the robot model in Gazebo -->
+    <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
+          args="-urdf -model xavier_car -param robot_description -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -R $(arg R_pos) -P $(arg P_pos) -Y $(arg Y_pos)"/>
+
+    <!-- Include ros_control racecar launch file -->
+    <include file="$(find robot_description)/launch/xavier_car_control.launch" ns="/"/>
+    <include file="$(find robot_description)/launch/pointcloud_to_laserscan.launch"/>
+
+    <!-- Launch gmapping -->
+    <include file="$(find robot_description)/launch/gmapping_simulation.launch"/>
+
+
+    <!-- Launch the simulation joystick control -->
+    <rosparam command="load" file="$(find robot_description)/config/keyboard_teleop.yaml"/>
+    <node pkg="robot_description" type="keyboard_teleop.py" name="keyboard_teleop" output="screen"/>
+</launch>
