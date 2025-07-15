@@ -61,10 +61,19 @@ Replace ~/your_directory/map_name with the desired path and filename.
 ### Project Structure
 ```bash
 Ackermann-Gmapping-Navigation/
-├── robot_description/         # Launch files and URDFs for Ackermann robot
-├── maps/                      # Saved maps (output)
-├── scripts/                   # Control, sensor scripts (if any)
-└── README.md
+├── alogrithm/          # (Typo: Should be "algorithm"?)
+├── launch/             # ROS launch files
+├── urdf/               # URDF files for robot description
+├── worlds/            # Gazebo simulation worlds
+├── meshes/            # 3D meshes for the robot
+├── config/            # Configuration files (e.g., YAML for navigation)
+├── scripts/           # Python/bash scripts
+├── robot_description/ # (Possibly redundant with urdf/?)
+├── velodyne/          # Velodyne LiDAR related files
+├── velodyne_simulator/ # Simulated Velodyne sensor
+├── CMakeLists.txt     # ROS/Catkin build file
+├── package.xml        # ROS package metadata
+└── README.md          # Project documentation
 ```
 
 # Ackermann-Gmapping-Navigation
