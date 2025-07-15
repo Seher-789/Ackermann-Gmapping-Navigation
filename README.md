@@ -1,5 +1,4 @@
-<img width="1229" height="1228" alt="Screenshot from 2025-07-15 16-27-16" src="https://github.com/user-attachments/assets/655e060f-4ee1-4d7c-b7cb-553608d569aa" />
-<img width="1281" height="1281" alt="Screenshot from 2025-07-15 16-23-39" src="https://github.com/user-attachments/assets/e5c3cd06-ef1a-4a9a-9664-00b17792ec7c" />
+
 # Ackermann GMapping Navigation
 
 This project demonstrates autonomous SLAM (Simultaneous Localization and Mapping) using an Ackermann steering vehicle in a ROS Noetic and Gazebo 11 environment. The system utilizes the `gmapping` algorithm for real-time 2D mapping using LiDAR data.
