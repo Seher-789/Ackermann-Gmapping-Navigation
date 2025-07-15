@@ -1,0 +1,8 @@
+<launch>
+  <node pkg="direct_lidar_odometry" type="dlo_node" name="dlo_node" output="screen">
+    <param name="pointcloud_topic" value="/velodyne_points" />
+    <param name="imu_topic" value="/imu" />
+    <param name="use_imu" value="false" /> <!-- Set to true if using IMU -->
+  </node>
+  <node pkg="rviz" type="rviz" name="rviz" args="-d $(find direct_lidar_odometry)/rviz/dlo.rviz" />
+</launch>

@@ -1,0 +1,109 @@
+<launch>
+    <!-- Arguments for the Gazebo simulation -->
+    <arg name="world" default="ROS-Academy" doc="ISCAS_building, ROS-Academy, small_city"/>
+    <arg name="paused" default="false"/>
+    <arg name="use_sim_time" default="true"/>
+    <arg name="gui" default="true"/>
+    <arg name="headless" default="false"/>
+    <arg name="debug" default="false"/>
+
+    <!-- Include Gazebo's empty world launch -->
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="world_name" value="$(find robot_description)/worlds/$(arg world).world"/>
+        <arg name="paused" value="$(arg paused)"/>
+        <arg name="use_sim_time" value="$(arg use_sim_time)"/>
+        <arg name="gui" value="$(arg gui)"/>
+        <arg name="headless" value="$(arg headless)"/>
+    </include>
+
+    <!-- Load the robot description -->
+    <param name="robot_description" command="rosrun xacro xacro $(find robot_description)/urdf/xavier_car/xavier_car.xacro"/>
+
+    <!-- Spawn the robot in Gazebo -->
+    <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-urdf -model your_robot_name -param robot_description" />
+
+    <!-- Start the joint state publisher -->
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher"/>
+
+    <!-- Start the robot state publisher -->
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+
+    <!-- Load the controller configurations from the YAML file -->
+    <rosparam file="$(find robot_description)/config/controller_manager/xacro.yaml" command="load" />
+
+    <!-- Start the joint state controller -->
+    <node name="joint_state_controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="joint_state_controller" />
+
+    <!-- Start the wheel velocity controllers -->
+    <node name="back_left_wheel_velocity_controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="back_left_wheel_velocity_controller" />
+    <node name="back_right_wheel_velocity_controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="back_right_wheel_velocity_controller" />
+    <node name="front_left_wheel_velocity_controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="front_left_wheel_velocity_controller" />
+    <node name="front_right_wheel_velocity_controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="front_right_wheel_velocity_controller" />
+
+    <!-- Start the steering position controllers -->
+    <node name="front_left_steering_position_controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="front_left_steering_position_controller" />
+    <node name="front_right_steering_position_controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="front_right_steering_position_controller" />
+
+    <!-- Start the cmd_vel_to_ackermann_drive node -->
+    <node name="cmd_vel_to_ackermann_drive" pkg="robot_description" type="twist_to_ackermann.py" respawn="false" output="screen" />
+
+    <!-- Start the circle motion node -->
+    <node pkg="robot_description" type="circle_motion.py" name="circle_motion_publisher" output="screen">
+        <remap from="/cmd_vel" to="/cmd_vel"/>
+    </node>
+</launch>
+
+<launch>
+    <!-- Arguments for the Gazebo simulation -->
+    <arg name="world" default="ROS-Academy" doc="ISCAS_building, ROS-Academy, small_city"/>
+    <arg name="paused" default="false"/>
+    <arg name="use_sim_time" default="true"/>
+    <arg name="gui" default="true"/>
+    <arg name="headless" default="false"/>
+    <arg name="debug" default="false"/>
+
+    <!-- Include Gazebo's empty world launch -->
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="world_name" value="$(find robot_description)/worlds/$(arg world).world"/>
+        <arg name="paused" value="$(arg paused)"/>
+        <arg name="use_sim_time" value="$(arg use_sim_time)"/>
+        <arg name="gui" value="$(arg gui)"/>
+        <arg name="headless" value="$(arg headless)"/>
+    </include>
+
+    <!-- Load the robot description -->
+    <param name="robot_description" command="rosrun xacro xacro $(find robot_description)/urdf/xavier_car/xavier_car.xacro"/>
+
+    <!-- Spawn the robot in Gazebo -->
+    <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-urdf -model your_robot_name -param robot_description" />
+
+    <!-- Start the joint state publisher -->
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher"/>
+
+    <!-- Start the robot state publisher -->
+    <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"/>
+
+    <!-- Load the controller configurations from the YAML file -->
+    <rosparam file="$(find robot_description)/config/controller_manager/xacro.yaml" command="load" />
+
+    <!-- Start the joint state controller -->
+    <node name="joint_state_controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="joint_state_controller" />
+
+    <!-- Start the wheel velocity controllers -->
+    <node name="back_left_wheel_velocity_controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="back_left_wheel_velocity_controller" />
+    <node name="back_right_wheel_velocity_controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="back_right_wheel_velocity_controller" />
+    <node name="front_left_wheel_velocity_controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="front_left_wheel_velocity_controller" />
+    <node name="front_right_wheel_velocity_controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="front_right_wheel_velocity_controller" />
+
+    <!-- Start the steering position controllers -->
+    <node name="front_left_steering_position_controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="front_left_steering_position_controller" />
+    <node name="front_right_steering_position_controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="front_right_steering_position_controller" />
+
+    <!-- Start the cmd_vel_to_ackermann_drive node -->
+    <node name="cmd_vel_to_ackermann_drive" pkg="robot_description" type="twist_to_ackermann.py" respawn="false" output="screen" />
+
+    <!-- Start the teleop_twist_keyboard node -->
+    <node pkg="robot_description" type="teleop_twist_keyboard.py" name="teleop_twist_keyboard" output="screen">
+        <remap from="/cmd_vel" to="/ackermann_cmd_mux/input/teleop"/>
+    </node>
+</launch>
